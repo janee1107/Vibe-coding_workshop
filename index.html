@@ -21,27 +21,33 @@
     }
   </script>
   <style>
-    /* 全域設定與滾動吸附 */
+    /* 全域設定與滾動吸附：修復版面溢出問題 */
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
       overflow-x: hidden;
-      scroll-snap-type: y mandatory;
+      /* 改為 proximity 以允許長內容正常滾動 */
+      scroll-snap-type: y proximity;
       height: 100vh;
-      overflow-y: scroll;
+      overflow-y: auto;
       background-color: #000;
       -webkit-font-smoothing: antialiased;
     }
 
     section {
       scroll-snap-align: start;
-      height: 100vh;
+      /* 使用 min-height 取代 height 讓內容自由長高 */
+      min-height: 100vh;
+      height: auto;
       width: 100vw;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       position: relative;
+      /* 加上 padding 防止文字貼邊被切 */
+      padding: 5rem 0; 
+      box-sizing: border-box;
     }
 
     /* 淡入動畫 */
@@ -53,6 +59,15 @@
     .fade-up.active {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* 解鎖內容淡入動畫 */
+    @keyframes promptFadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-prompt-in {
+      animation: promptFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     /* The Unseen Hero 特效移植 */
@@ -126,6 +141,40 @@
 </head>
 <body class="text-white">
 
+  <!-- 新增滑動頁面 0-1: 封面故事標題 -->
+  <section class="bg-black text-center px-6 relative overflow-hidden">
+    <div class="hero-glow"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0,transparent_100%)]"></div>
+    <div class="fade-up relative z-10 w-full max-w-5xl">
+      <h2 class="text-3xl md:text-4xl text-gray-500 font-bold tracking-widest mb-6 uppercase">Cover Story</h2>
+      <h1 class="text-6xl md:text-[7rem] font-extrabold mb-6 tracking-tighter text-white leading-tight">
+        做自己的工程師
+      </h1>
+      <p class="text-3xl md:text-5xl font-bold mt-8 leading-relaxed text-shine-orange">
+        從 0 ~ 1 Vibe Coding 快速上手
+      </p>
+    </div>
+  </section>
+
+  <!-- 新增滑動頁面 0-2: 今日 Roadmap -->
+  <section class="bg-[#111] text-center px-6 relative overflow-hidden">
+    <div class="fade-up relative z-10 w-full max-w-4xl mx-auto">
+      <h2 class="text-4xl md:text-6xl font-bold mb-14 tracking-tight text-white text-center">Today's Roadmap</h2>
+      
+      <div class="flex flex-col gap-6 text-xl md:text-2xl font-medium text-gray-300 text-left bg-white/5 p-8 md:p-12 rounded-[32px] border border-white/10 shadow-2xl backdrop-blur-md max-w-2xl mx-auto">
+        <div class="flex items-center gap-6"><span class="text-mtk-orange font-mono font-bold w-8 text-right">01</span> <span>A True Story</span></div>
+        <div class="h-px w-full bg-white/10"></div>
+        <div class="flex items-center gap-6"><span class="text-mtk-orange font-mono font-bold w-8 text-right">02</span> <span>Tools Made by Me</span></div>
+        <div class="h-px w-full bg-white/10"></div>
+        <div class="flex items-center gap-6"><span class="text-mtk-orange font-mono font-bold w-8 text-right">03</span> <span>The Joy of Vibe Coding</span></div>
+        <div class="h-px w-full bg-white/10"></div>
+        <div class="flex items-center gap-6"><span class="text-mtk-orange font-mono font-bold w-8 text-right">04</span> <span>Live Demo & The Art of Prompting</span></div>
+        <div class="h-px w-full bg-white/10"></div>
+        <div class="flex items-center gap-6"><span class="text-mtk-orange font-mono font-bold w-8 text-right">05</span> <span>Reality Check & Overcoming Roadblocks</span></div>
+      </div>
+    </div>
+  </section>
+
   <!-- 滑動頁面 1: The Hook 開場敘事 -->
   <section class="bg-[#050505] text-center px-6 relative overflow-hidden">
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0,transparent_100%)]"></div>
@@ -144,7 +193,7 @@
   <!-- 滑動頁面 2: The Unseen Hero 網頁展示與對比 -->
   <section class="bg-[#111] text-center px-6 relative overflow-hidden">
     <div class="hero-glow"></div>
-    <div class="fade-up relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center justify-center h-full pt-12">
+    <div class="fade-up relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center justify-center pt-8">
       
       <!-- 網頁截圖展示 (真實 Code 模擬) -->
       <div class="mb-12 relative group w-full max-w-4xl mx-auto">
@@ -181,62 +230,69 @@
         <div class="text-white text-center relative group">
           <p class="text-sm uppercase tracking-widest mb-3 font-semibold text-gray-300">現在這份精美網頁...</p>
           <p class="text-5xl md:text-7xl font-bold text-white tracking-tighter shadow-orange flex items-baseline gap-4">
-            2 天
+            2 週
           </p>
           <!-- Hover/Animation effect for Made by YOU -->
-          <div class="absolute -top-12 -right-16 transform rotate-12 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-500 origin-bottom-left shadow-2xl">
-             <span class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-mtk-orange to-yellow-400">Made by M.</span>
-             <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-mtk-orange to-yellow-400 block -mt-2 group-hover:animate-pulse">YOU!</span>
+          <div class="absolute -top-12 -right-16 transform rotate-12 bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-500 origin-bottom-left shadow-2xl">
+             <span class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-mtk-orange to-yellow-400 block group-hover:animate-pulse whitespace-nowrap">Made by YOU!</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 滑動頁面 2: The Motivation -->
+  <!-- 滑動頁面 3: Proof of Concept -> 改為 Made by ME -->
+  <section class="bg-[#F5F5F7] text-center px-6 text-black">
+    <div class="fade-up w-full max-w-6xl mx-auto">
+      <h2 class="text-5xl md:text-7xl font-bold mb-16 tracking-tight">Made by ME.</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        
+        <!-- Travel Tool Iframe -->
+        <div class="bg-white rounded-[32px] p-8 shadow-xl transform transition hover:-translate-y-2 duration-500">
+          <h3 class="text-2xl font-bold mb-6 text-left text-gray-800">Travel Assistant</h3>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-inner relative group border border-gray-200">
+            <!-- 加入 hover:scale-110 外層包裹器以實現放大效果 -->
+            <div class="w-full h-full transform transition-transform duration-700 group-hover:scale-110">
+              <iframe src="https://interactive-trip-iti-zooh.bolt.host/" class="w-full h-full border-0 pointer-events-none group-hover:pointer-events-auto" loading="lazy"></iframe>
+            </div>
+            <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
+              <div class="bg-white text-black px-6 py-2 rounded-full font-semibold shadow-lg text-sm tracking-wide">Hover to interact</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Management Tool Iframe (直接載入本地提供的 HTML) -->
+        <div class="bg-white rounded-[32px] p-8 shadow-xl transform transition hover:-translate-y-2 duration-500">
+          <h3 class="text-2xl font-bold mb-6 text-left text-gray-800">Project Management</h3>
+          <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-inner relative group border border-gray-200">
+            <div class="w-full h-full transform transition-transform duration-700 group-hover:scale-110">
+              <!-- 指向您提供的 PJ_demo.html 檔案，確保在同一資料夾即可呈現精美互動效果 -->
+              <iframe src="PJ_demo.html" class="w-full h-full border-0 pointer-events-none group-hover:pointer-events-auto" loading="lazy"></iframe>
+            </div>
+            <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
+              <div class="bg-white text-black px-6 py-2 rounded-full font-semibold shadow-lg text-sm tracking-wide">Hover to interact</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 滑動頁面 4: The Motivation (移至 Made by ME 後方) -->
   <section class="bg-black text-center px-6 relative">
-    <div class="fade-up max-w-4xl mx-auto flex flex-col justify-center h-full">
+    <div class="fade-up max-w-4xl mx-auto flex flex-col justify-center">
       <h2 class="text-4xl md:text-5xl font-semibold mb-2 tracking-tight text-white/50">Why start?</h2>
       <h1 class="text-[8rem] md:text-[12rem] font-extrabold mb-8 tracking-tighter text-gradient-fun leading-none">Fun.</h1>
       <p class="text-2xl md:text-4xl font-medium text-gray-300 leading-relaxed mt-4">
         從 0 到 1 定義問題，<br>並親手解決它。<br>
         <span class="text-white font-semibold mt-4 block">這就是極致的成就感。</span>
+        <span class="text-mtk-orange font-semibold mt-4 block">不只有趣，還能為工作玩出更多改變</span>
       </p>
     </div>
   </section>
 
-  <!-- 滑動頁面 3: Proof of Concept -->
-  <section class="bg-[#F5F5F7] text-center px-6 text-black">
-    <div class="fade-up w-full max-w-6xl mx-auto">
-      <h2 class="text-5xl md:text-7xl font-bold mb-16 tracking-tight">Made by You.</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        
-        <!-- Travel Tool Iframe -->
-        <div class="bg-white rounded-[32px] p-8 shadow-xl transform transition hover:-translate-y-2 duration-500">
-          <h3 class="text-2xl font-bold mb-6 text-left text-gray-800">Travel ITI Tool</h3>
-          <div class="aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 shadow-inner relative group border border-gray-200">
-            <iframe src="https://interactive-trip-iti-zooh.bolt.host/" class="w-full h-full border-0 pointer-events-none group-hover:pointer-events-auto transition-opacity" loading="lazy"></iframe>
-            <div class="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:opacity-0 transition-opacity duration-300">
-              <div class="bg-white text-black px-6 py-2 rounded-full font-semibold shadow-lg text-sm">Hover to interact</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project Management Tool Placeholder -->
-        <div class="bg-white rounded-[32px] p-8 shadow-xl transform transition hover:-translate-y-2 duration-500">
-          <h3 class="text-2xl font-bold mb-6 text-left text-gray-800">Project Management</h3>
-          <div class="aspect-[4/3] rounded-2xl bg-gradient-to-br from-gray-50 to-gray-200 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400">
-            <svg class="w-16 h-16 mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-            <span class="font-medium text-lg">專案管理畫面預留區</span>
-            <span class="text-sm mt-2 opacity-70">(Your next amazing tool)</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- 滑動頁面 4: Concept -->
+  <!-- 滑動頁面 5: Concept -->
   <section class="bg-black text-center px-6 relative overflow-hidden">
     <!-- 背景裝飾 -->
     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px]"></div>
@@ -254,7 +310,7 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 5: Demo 預告 (點餐輸入框) -->
+  <!-- 滑動頁面 6: Demo 預告 (點餐輸入框) -->
   <section class="bg-[#F5F5F7] text-center px-6">
     <div class="fade-up w-full max-w-4xl mx-auto">
       <div class="bg-white rounded-[40px] shadow-2xl p-10 md:p-16 mb-8 mx-auto -translate-y-4 text-left border border-gray-100">
@@ -270,10 +326,10 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 5-2: Demo (真實行事曆實作) -->
+  <!-- 滑動頁面 7: Demo (真實行事曆實作) -->
   <section class="bg-[#F5F5F7] text-center px-4 relative overflow-hidden" id="s5">
     <div class="absolute inset-0 bg-gradient-to-b from-gray-50 to-gray-200 z-0"></div>
-    <div class="fade-up relative z-10 w-full max-w-6xl mx-auto h-full flex flex-col justify-center py-12">
+    <div class="fade-up relative z-10 w-full max-w-6xl mx-auto flex flex-col justify-center">
       <div class="flex items-center justify-between mb-8">
         <h2 class="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight text-left">2026 MediaTek Event Calendar</h2>
         <span class="bg-mtk-orange text-white px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide shadow-md">Made with Vibe Coding</span>
@@ -388,7 +444,7 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 6: The Secret Sauce -->
+  <!-- 滑動頁面 8: The Secret Sauce -->
   <section class="bg-black text-center px-6 relative" id="s6">
     <div class="fade-up max-w-7xl mx-auto w-full">
       <h2 class="text-5xl md:text-6xl font-bold mb-16 tracking-tight text-white text-center">溝通的藝術。</h2>
@@ -410,7 +466,7 @@
         <!-- Right: Practical Prompt Example -->
         <div class="bg-gray-900 rounded-[32px] p-8 md:p-10 border border-gray-800 text-left flex flex-col justify-center font-mono text-sm md:text-base text-gray-300 leading-relaxed overflow-hidden relative">
           <div class="absolute top-4 right-6 text-gray-600 font-sans text-sm font-bold tracking-widest">PROMPT</div>
-          <p><strong class="text-blue-400"># Role ＆ Style</strong><br>你現在是一個資深的 HR 系統介面設計師。請幫我做一個『2026 MediaTek 年度活動行事曆』網頁，風格要是 Apple 官網簡約白色、毛玻璃的高級感。</p>
+          <p><strong class="text-blue-400"># Role ＆ Style</strong><br>你是一個資深的前端網頁設計師。請幫我做一個『2026 MediaTek 年度活動行事曆』網頁，風格要是簡約白色、毛玻璃的高級感。</p>
           <div class="w-8 h-px bg-gray-700 my-4"></div>
           <p><strong class="text-green-400"># Requirement</strong><br>我需要兩個月份的卡片：<br>
           - 3月：健康演講、桌球促進、Global Volunteer Hero<br>
@@ -423,7 +479,54 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 7: Reality Check (能力邊界) -->
+  <!-- 滑動頁面 8.5: 新增 - 實戰小練習 -->
+  <section class="bg-[#111] text-center px-6 relative overflow-hidden" id="s6-5">
+    <div class="fade-up max-w-7xl mx-auto w-full relative z-10">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white">5 分鐘自己做一個小工具</h2>
+        <p class="text-xl text-gray-400 font-medium">以「會議計時器」為例，感受指令下得「簡單」與「具體」的魔法差異。</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 text-left">
+        <!-- 簡易版 -->
+        <div class="bg-gray-900/50 rounded-[32px] p-8 md:p-10 border border-gray-700/50 relative flex flex-col hover:-translate-y-1 transition-transform duration-300 h-full">
+          <div class="absolute top-0 right-0 bg-gray-700 text-gray-200 px-5 py-2 rounded-bl-2xl rounded-tr-[32px] text-sm font-bold tracking-widest">簡易版</div>
+          <h3 class="text-2xl font-bold text-gray-200 mb-8 border-b border-gray-700 pb-4">Basic Prompt</h3>
+          <div class="space-y-6 text-gray-300 font-mono text-sm md:text-base leading-relaxed">
+            <p><strong class="text-blue-400 text-lg">1 Role 角色設定</strong><br>資深 UI 設計師。</p>
+            <p><strong class="text-purple-400 text-lg">2 Style 風格指定</strong><br>插畫風格。</p>
+            <p><strong class="text-green-400 text-lg">3 Requirement 明確需求</strong><br>做一個會議計時小工具，每 10 分鐘跳出一個提醒；總長不能超過 30 分鐘。</p>
+            <p><strong class="text-red-400 text-lg">4 Constraint 邊界限制</strong><br>給我單一 HTML 檔案。</p>
+          </div>
+        </div>
+
+        <!-- 進階版 -->
+        <div class="bg-gradient-to-b from-gray-900 to-[#1a1a1a] rounded-[32px] p-8 md:p-10 border border-mtk-orange/40 relative flex flex-col shadow-2xl shadow-mtk-orange/5 hover:-translate-y-1 transition-transform duration-300 h-full min-h-[420px]">
+          <div class="absolute top-0 right-0 bg-mtk-orange text-white px-5 py-2 rounded-bl-2xl rounded-tr-[32px] text-sm font-bold tracking-widest shadow-lg z-20">進階版 </div>
+          <h3 class="text-2xl font-bold text-white mb-8 border-b border-gray-700 pb-4 relative z-20">Advanced Prompt</h3>
+          
+          <!-- 解鎖前：點擊按鈕 -->
+          <div id="unlock-container" class="flex flex-col items-center justify-center flex-grow space-y-4 relative z-20">
+            <button onclick="unlockPrompt()" class="bg-mtk-orange hover:bg-[#CC5200] text-white font-bold py-3.5 px-8 rounded-full flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_25px_rgba(240,90,34,0.4)] hover:shadow-[0_0_35px_rgba(240,90,34,0.6)] cursor-pointer">
+               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+               解鎖進階細節
+            </button>
+            <p class="text-sm text-gray-400 font-medium">點擊展示具體化指令</p>
+          </div>
+
+          <!-- 解鎖後：進階指令內容 (預設隱藏) -->
+          <div id="advanced-prompt-content" class="hidden space-y-6 text-gray-200 font-mono text-sm md:text-base leading-relaxed relative z-20">
+            <p><strong class="text-blue-400 text-lg">1 Role 角色設定</strong><br>你現在是一位「資深 UI/UX 設計師」與「前端開發專家」。</p>
+            <p><strong class="text-purple-400 text-lg">2 Style 風格指定</strong><br>現代簡約的插畫風格，配色請使用柔和的莫蘭迪色系（不刺眼），具備高級質感與流暢的微動畫轉場。</p>
+            <p><strong class="text-green-400 text-lg">3 Requirement 明確需求</strong><br>製作一個「會議計時器」，總時長限制為 30 分鐘。包含環形進度條、大字體倒數顯示，以及「開始/暫停/重置」按鈕。<br><span class="text-white font-semibold">重點功能：</span>每經過 10 分鐘，畫面中央必須彈出醒目的「插畫圖示（例如 ☕️ 喝口水、🧘 伸展一下）」與幽默的提示文字，並帶有溫和的彈出動畫，停留 5 秒後自動消失。</p>
+            <p><strong class="text-red-400 text-lg">4 Constraint 邊界限制</strong><br>所有 CSS 與 JS 必須寫在同一個 HTML 檔案中。插畫請使用高畫質 SVG 或 Emoji 實作，嚴禁使用外部圖片連結。確保介面完美響應式（RWD）。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 滑動頁面 9: Reality Check (能力邊界) -->
   <section class="bg-black text-center px-6 relative overflow-hidden" id="s7">
     <div class="fade-up max-w-6xl mx-auto w-full relative z-10">
       <div class="text-center mb-16">
@@ -469,7 +572,7 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 8: 撞牆期與解方 -->
+  <!-- 滑動頁面 10: 撞牆期與解方 -->
   <section class="bg-[#F5F5F7] px-6 text-black" id="s8">
     <div class="fade-up max-w-7xl mx-auto w-full">
       <div class="text-center mb-16">
@@ -523,8 +626,8 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 8: Conclusion -->
-  <section class="bg-[#050505] text-center px-6 relative flex items-center justify-center overflow-hidden" id="s8">
+  <!-- 滑動頁面 11: Conclusion -->
+  <section class="bg-[#050505] text-center px-6 relative flex items-center justify-center overflow-hidden" id="s9">
     <div class="absolute inset-0 flex items-center justify-center opacity-40 select-none pointer-events-none">
       <div class="w-[800px] h-[800px] bg-gradient-to-tr from-purple-800 via-blue-800 to-black rounded-full blur-[100px] animate-pulse" style="animation-duration: 4s;"></div>
     </div>
@@ -540,8 +643,8 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 9: Actionable Next Steps -->
-  <section class="bg-black text-center px-6 relative" id="s9">
+  <!-- 滑動頁面 12: Actionable Next Steps -->
+  <section class="bg-black text-center px-6 relative" id="s10">
     <div class="fade-up max-w-5xl mx-auto w-full relative z-10">
       <h2 class="text-4xl md:text-6xl font-bold mb-16 tracking-tight text-white text-center">今晚，你可以做的 3 件事。</h2>
       
@@ -550,7 +653,7 @@
         <div class="glass-box rounded-3xl p-8 hover:-translate-y-2 transition duration-300">
           <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xl mb-6">1</div>
           <h3 class="text-2xl font-bold text-white mb-3">記錄痛點</h3>
-          <p class="text-gray-400 leading-relaxed font-medium">打開手機備忘錄，寫下工作或生活上「那個很煩、但沒人幫你做」的小流程。</p>
+          <p class="text-gray-400 leading-relaxed font-medium">打開手機備忘錄，寫下工作或生活上「那個困擾你、但沒人幫你做」的小流程。</p>
         </div>
 
         <!-- Step 2 -->
@@ -564,7 +667,7 @@
         <div class="glass-box rounded-3xl p-8 hover:-translate-y-2 transition duration-300">
           <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xl mb-6">3</div>
           <h3 class="text-2xl font-bold text-white mb-3">丟給 AI 生成器</h3>
-          <p class="text-gray-400 leading-relaxed font-medium">打開 Claude、Bolt 或 v0，把你的咒語貼上去，然後享受看著它生出來的 "Fun"！</p>
+          <p class="text-gray-400 leading-relaxed font-medium">打開MediaTek Copilot, Gemini 或 Claude，把你的咒語貼上去，然後享受看著它生出來的 "Fun"！</p>
         </div>
       </div>
     </div>
@@ -586,6 +689,20 @@
     document.querySelectorAll('.fade-up').forEach(el => {
       observer.observe(el);
     });
+
+    // 解鎖進階 Prompt 邏輯
+    function unlockPrompt() {
+      const container = document.getElementById('unlock-container');
+      const content = document.getElementById('advanced-prompt-content');
+      
+      // 隱藏按鈕區塊
+      container.style.display = 'none';
+      
+      // 顯示內容並加入淡入動畫 Class
+      content.classList.remove('hidden');
+      content.classList.add('animate-prompt-in');
+    }
   </script>
 </body>
-</html
+</html>
+

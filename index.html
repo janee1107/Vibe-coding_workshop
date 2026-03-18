@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>做自己的工程師：從 0 ~ 1 Vibe Coding 快速上手</title>
+  <title>HR 的魔法棒——15分鐘體驗 Vibe Coding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -479,12 +479,12 @@
     </div>
   </section>
 
-  <!-- 滑動頁面 8.5: 新增 - 實戰小練習 -->
+  <!-- 滑動頁面 8.5: 新增 - 實戰小練習 (替換為 Event Calendar) -->
   <section class="bg-[#111] text-center px-6 relative overflow-hidden" id="s6-5">
     <div class="fade-up max-w-7xl mx-auto w-full relative z-10">
       <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white">5 分鐘自己做一個小工具</h2>
-        <p class="text-xl text-gray-400 font-medium">以「會議計時器」為例，感受指令下得「簡單」與「具體」的魔法差異。</p>
+        <h2 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white">5 分鐘實作：Event Calendar</h2>
+        <p class="text-xl text-gray-400 font-medium">以剛剛展示的「活動行事曆」為例，感受指令下得「簡單」與「具體」的魔法差異。</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 text-left">
@@ -493,16 +493,16 @@
           <div class="absolute top-0 right-0 bg-gray-700 text-gray-200 px-5 py-2 rounded-bl-2xl rounded-tr-[32px] text-sm font-bold tracking-widest">簡易版</div>
           <h3 class="text-2xl font-bold text-gray-200 mb-8 border-b border-gray-700 pb-4">Basic Prompt</h3>
           <div class="space-y-6 text-gray-300 font-mono text-sm md:text-base leading-relaxed">
-            <p><strong class="text-blue-400 text-lg">1 Role 角色設定</strong><br>資深 UI 設計師。</p>
-            <p><strong class="text-purple-400 text-lg">2 Style 風格指定</strong><br>插畫風格。</p>
-            <p><strong class="text-green-400 text-lg">3 Requirement 明確需求</strong><br>做一個會議計時小工具，每 10 分鐘跳出一個提醒；總長不能超過 30 分鐘。</p>
+            <p><strong class="text-blue-400 text-lg">1 Role 角色設定</strong><br>網頁設計師。</p>
+            <p><strong class="text-purple-400 text-lg">2 Style 風格指定</strong><br>乾淨漂亮，風格要是簡約白色。</p>
+            <p><strong class="text-green-400 text-lg">3 Requirement 明確需求</strong><br>幫我做一個公司活動行事曆，裡面要有3月跟4月的活動清單，要有按鈕可以讓同仁直接報名活動。</p>
             <p><strong class="text-red-400 text-lg">4 Constraint 邊界限制</strong><br>給我單一 HTML 檔案。</p>
           </div>
         </div>
 
         <!-- 進階版 -->
         <div class="bg-gradient-to-b from-gray-900 to-[#1a1a1a] rounded-[32px] p-8 md:p-10 border border-mtk-orange/40 relative flex flex-col shadow-2xl shadow-mtk-orange/5 hover:-translate-y-1 transition-transform duration-300 h-full min-h-[420px]">
-          <div class="absolute top-0 right-0 bg-mtk-orange text-white px-5 py-2 rounded-bl-2xl rounded-tr-[32px] text-sm font-bold tracking-widest shadow-lg z-20">進階版 </div>
+          <div class="absolute top-0 right-0 bg-mtk-orange text-white px-5 py-2 rounded-bl-2xl rounded-tr-[32px] text-sm font-bold tracking-widest shadow-lg z-20">進階版</div>
           <h3 class="text-2xl font-bold text-white mb-8 border-b border-gray-700 pb-4 relative z-20">Advanced Prompt</h3>
           
           <!-- 解鎖前：點擊按鈕 -->
@@ -516,10 +516,13 @@
 
           <!-- 解鎖後：進階指令內容 (預設隱藏) -->
           <div id="advanced-prompt-content" class="hidden space-y-6 text-gray-200 font-mono text-sm md:text-base leading-relaxed relative z-20">
-            <p><strong class="text-blue-400 text-lg">1 Role 角色設定</strong><br>你現在是一位「資深 UI/UX 設計師」與「前端開發專家」。</p>
-            <p><strong class="text-purple-400 text-lg">2 Style 風格指定</strong><br>現代簡約的插畫風格，配色請使用柔和的莫蘭迪色系（不刺眼），具備高級質感與流暢的微動畫轉場。</p>
-            <p><strong class="text-green-400 text-lg">3 Requirement 明確需求</strong><br>製作一個「會議計時器」，總時長限制為 30 分鐘。包含環形進度條、大字體倒數顯示，以及「開始/暫停/重置」按鈕。<br><span class="text-white font-semibold">重點功能：</span>每經過 10 分鐘，畫面中央必須彈出醒目的「插畫圖示（例如 ☕️ 喝口水、🧘 伸展一下）」與幽默的提示文字，並帶有溫和的彈出動畫，停留 5 秒後自動消失。</p>
-            <p><strong class="text-red-400 text-lg">4 Constraint 邊界限制</strong><br>所有 CSS 與 JS 必須寫在同一個 HTML 檔案中。插畫請使用高畫質 SVG 或 Emoji 實作，嚴禁使用外部圖片連結。確保介面完美響應式（RWD）。</p>
+            <p><strong class="text-blue-400 text-lg">1 Role 角色設定</strong><br>你現在是一位「資深前端工程師」。</p>
+            <p><strong class="text-purple-400 text-lg">2 Style 風格指定</strong><br>簡約白色風格，具備高級的毛玻璃質感與流暢的卡片 Hover 動畫效果。</p>
+            <p><strong class="text-green-400 text-lg">3 Requirement 明確需求</strong><br>製作一個「2026 MediaTek Event Calendar」。需要兩個月份的卡片：<br>
+            - 3月：健康演講、桌球促進、Global Volunteer Hero<br>
+            - 4月：捐血活動、植樹體驗、財務管理講座<br>
+            <span class="text-white font-semibold">重點功能：</span>每項活動要有介紹、醒目的 deadline 標籤，以及一個「報名平台」按鈕。</p>
+            <p><strong class="text-red-400 text-lg">4 Constraint 邊界限制</strong><br>所有樣式必須寫在同一個 HTML 檔案中。嚴禁自行發明假資料或腦補活動內容，完全依照我提供的文字。按鈕超連結先設定為 '#'。確保介面完美響應式（RWD）。</p>
           </div>
         </div>
       </div>
@@ -567,7 +570,7 @@
       </div>
       
       <div class="mt-12 inline-block bg-gray-900 border border-gray-800 rounded-2xl px-8 py-4 text-gray-400 font-medium">
-        💡 <strong class="text-white">Guidance：</strong>把這把魔法棒當作「精美 UI 產生器」與「靈感實體化工具」，複雜的後端還是交給專業 IT 吧！
+        💡 <strong class="text-white">Guidance：</strong>把這把魔法棒當作「精美 UI 產生器」與「靈感實體化工具」，複雜的後端還是交給專業開發者吧！
       </div>
     </div>
   </section>
@@ -705,4 +708,5 @@
   </script>
 </body>
 </html>
+
 
